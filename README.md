@@ -9,6 +9,11 @@ Detectar transacciones fraudulentas combinando análisis exploratorio, machine l
 - **Fuente:** [IEEE-CIS Fraud Detection — Kaggle](https://www.kaggle.com/c/ieee-fraud-detection)
 - **Tamaño:** ~590k transacciones, 434 features
 - **Target:** `isFraud` (1 = fraude, 0 = legítimo)
+## Conectarme
+-- cd Desktop\credit-fraud-detection
+-- venv\Scripts\activate
+-- jupyter notebook
+
 
 ## Estructura del proyecto
 credit-fraud-detection/
@@ -25,5 +30,8 @@ credit-fraud-detection/
 - Python 3.11 · Pandas · NumPy · Matplotlib · Seaborn
 - Scikit-learn · XGBoost · LightGBM
 - PyTorch
+- dataset:
+    - kaggle competitions download -c ieee-fraud-detection -p data/     
+    - expandirlo:  Expand-Archive-Path data\ieee-fraud-detection.zip -DestinationPath data\
 
 
