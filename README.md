@@ -33,7 +33,7 @@ Comparé cuatro modelos con validación temporal: entrenando con el 80% más ant
 | Baseline (`DummyClassifier`) | 0,034 | 0,500 |
 | Regresión logística | 0,190 | 0,835 |
 | Random Forest | 0,493 | 0,903 |
-| **LightGBM** | **0,611** | **0,917** |
+| **LightGBM** | **0,618** | **0,918** |
 
 ![Curvas precisión-recall](outputs/figures/pr_curves.png)
 
@@ -41,7 +41,7 @@ Uso la **PR-AUC** como métrica principal porque solo el 3,5% de las transaccion
 
 **Resultado en Kaggle (test oculto):** ROC-AUC de **0,891** en el leaderboard privado (0,929 en el público). La solución ganadora obtuvo 0,946.
 
-**LightGBM es el mejor modelo.** La regresión logística se queda muy lejos porque, al ser lineal, no capta las relaciones no lineales que hay en los datos, como la forma de U del importe o el pico de fraude en la madrugada. Los árboles sí las captan, y LightGBM mejora a Random Forest en un 24% porque cada árbol se centra en corregir los errores de los anteriores.
+**LightGBM es el mejor modelo.** La regresión logística se queda muy lejos porque, al ser lineal, no capta las relaciones no lineales que hay en los datos, como la forma de U del importe o el pico de fraude en la madrugada. Los árboles sí las captan, y LightGBM mejora a Random Forest en un 25% porque cada árbol se centra en corregir los errores de los anteriores.
 
 ### Umbral de decisión y coste
 
@@ -49,9 +49,9 @@ El modelo da una probabilidad, pero un banco tiene que decidir si aprueba o bloq
 
 Con el umbral elegido (0,5), en el periodo de validación:
 
-- Se detectan **2.102 fraudes** (el 52%).
-- Se molesta a **827 clientes legítimos**, unos 0,4 por cada fraude detectado.
-- Las pérdidas estimadas pasan de **609.934 $** sin modelo a **368.137 $**: una reducción del **40%**.
+- Se detectan **1.997 fraudes** (el 49%).
+- Se molesta a **574 clientes legítimos**, unos 0,3 por cada fraude detectado.
+- Las pérdidas estimadas pasan de **609.934 $** sin modelo a **386.850 $**: una reducción del **37%**.
 
 ![Matriz de confusión](outputs/figures/confusion_matrix.png)
 
