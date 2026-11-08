@@ -39,17 +39,19 @@ Comparé cuatro modelos con validación temporal: entrenando con el 80% más ant
 
 Uso la **PR-AUC** como métrica principal porque solo el 3,5% de las transacciones son fraude: la accuracy no sirve (un modelo que nunca detecta fraude tiene un 96,5%) y la ROC-AUC sale demasiado optimista con clases tan desbalanceadas.
 
+**Resultado en Kaggle (test oculto):** ROC-AUC de **0,891** en el leaderboard privado (0,929 en el público). La solución ganadora obtuvo 0,946.
+
 **LightGBM es el mejor modelo.** La regresión logística se queda muy lejos porque, al ser lineal, no capta las relaciones no lineales que hay en los datos, como la forma de U del importe o el pico de fraude en la madrugada. Los árboles sí las captan, y LightGBM mejora a Random Forest en un 24% porque cada árbol se centra en corregir los errores de los anteriores.
 
 ### Umbral de decisión y coste
 
-El modelo da una probabilidad, pero un banco tiene que decidir si aprueba o bloquea. Elegí el umbral con una función de coste en euros: el fraude que se escapa se pierde entero, y bloquear una compra legítima cuesta una parte `p` de su importe (la molestia al cliente, la venta perdida y el riesgo de que se vaya). Ese `p` es una suposición mía, porque no tengo el dato real, pero un analista de riesgos del banco lo podría dar. Comprobé cómo cambia el umbral óptimo con distintos valores de `p`.
+El modelo da una probabilidad, pero un banco tiene que decidir si aprueba o bloquea. Elegí el umbral con una función de coste en dólares: el fraude que se escapa se pierde entero, y bloquear una compra legítima cuesta una parte `p` de su importe (la molestia al cliente, la venta perdida y el riesgo de que se vaya). Ese `p` es una suposición mía, porque no tengo el dato real, pero un analista de riesgos del banco lo podría dar. Comprobé cómo cambia el umbral óptimo con distintos valores de `p`.
 
 Con el umbral elegido (0,5), en el periodo de validación:
 
 - Se detectan **2.102 fraudes** (el 52%).
 - Se molesta a **827 clientes legítimos**, unos 0,4 por cada fraude detectado.
-- Las pérdidas estimadas pasan de **609.934 €** sin modelo a **368.137 €**: una reducción del **40%**.
+- Las pérdidas estimadas pasan de **609.934 $** sin modelo a **368.137 $**: una reducción del **40%**.
 
 ![Matriz de confusión](outputs/figures/confusion_matrix.png)
 
@@ -90,6 +92,7 @@ Las variables más útiles para el modelo son las que creé en el feature engine
 
 - Crear un identificador de cliente combinando `card1`, `addr1` y `D1`, como hicieron los ganadores de la competición, para comparar cada transacción con el comportamiento del cliente y no solo de la tarjeta.
 - Usar SHAP para explicar por qué el modelo marca cada transacción concreta como sospechosa.
+- Usar validación cruzada temporal (`TimeSeriesSplit`) para comprobar que el resultado es estable en distintos periodos, y no solo en el último 20% de los datos. Para hacerlo sin data leakage, habría que recalcular los agregados por tarjeta y las categorías raras dentro de cada fold, usando solo su parte de entrenamiento.
 
 ## Estructura del repositorio
 
